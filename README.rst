@@ -99,9 +99,9 @@ Exporting to CSV file:
 
     z_file.to_csv('./output/output.csv')
 
-.. code:: python
+.. code:: bash
 
-    !head ./output/output.csv
+    head ./output/output.csv
 
 
 .. parsed-literal::
@@ -164,9 +164,9 @@ Write a new ZMAP file as 3 nodes per line format:
 
     z_file.write('./output/test.zmap', nodes_per_line=3)
 
-.. code:: python
+.. code:: bash
 
-    !head ./output/test.zmap
+    head ./output/test.zmap
 
 
 .. parsed-literal::
@@ -287,9 +287,9 @@ Customize writing a ZMAP file:
     new_zgrid.name = 'test'
     new_zgrid.write('./output/new_z.dat')
 
-.. code:: python
+.. code:: bash
 
-    !head ./output/new_z.dat
+    head ./output/new_z.dat
 
 
 .. parsed-literal::
