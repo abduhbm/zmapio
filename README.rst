@@ -53,13 +53,6 @@ Plotting the grid data:
 
 
 
-.. parsed-literal::
-
-    <matplotlib.collections.QuadMesh at 0x1103d5240>
-
-
-
-
 .. image:: _static/output_9_1.png
 
 
@@ -211,13 +204,6 @@ Creating a ZMAP object from string:
 
 
 
-.. parsed-literal::
-
-    <matplotlib.collections.QuadMesh at 0x11ec322e8>
-
-
-
-
 .. image:: _static/output_28_1.png
 
 
@@ -229,13 +215,6 @@ Adding colorbar and colormap using matplotlib:
     fig=plt.figure(figsize=(12, 6))
     z_obj.plot(cmap='jet')
     plt.colorbar()
-
-
-
-
-.. parsed-literal::
-
-    <matplotlib.colorbar.Colorbar at 0x1116377f0>
 
 
 
@@ -262,13 +241,6 @@ no_rows):
 .. code:: python
 
     new_zgrid.plot(cmap='gist_earth')
-
-
-
-
-.. parsed-literal::
-
-    <matplotlib.collections.QuadMesh at 0x1116b27b8>
 
 
 
