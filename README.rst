@@ -53,7 +53,7 @@ Plotting the grid data:
 
 
 
-.. image:: _static/output_9_1.png
+.. image:: https://raw.githubusercontent.com/abduhbm/zmapio/master/_static/output_9_1.png
 
 
 Counts for rows and columns:
@@ -204,7 +204,7 @@ Creating a ZMAP object from string:
 
 
 
-.. image:: _static/output_28_1.png
+.. image:: https://raw.githubusercontent.com/abduhbm/zmapio/master/_static/output_28_1.png
 
 
 Adding colorbar and colormap using matplotlib:
@@ -219,7 +219,7 @@ Adding colorbar and colormap using matplotlib:
 
 
 
-.. image:: _static/output_30_1.png
+.. image:: https://raw.githubusercontent.com/abduhbm/zmapio/master/_static/output_30_1.png
 
 
 Creating a new ZMAP object from 2D-Numpy array with shape (no_cols,
@@ -245,7 +245,7 @@ no_rows):
 
 
 
-.. image:: _static/output_33_1.png
+.. image:: https://raw.githubusercontent.com/abduhbm/zmapio/master/_static/output_33_1.png
 
 
 Customize writing a ZMAP file:
