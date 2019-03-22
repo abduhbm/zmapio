@@ -80,7 +80,9 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
-        'Topic :: Utilities'
+        'Topic :: Utilities',
+        'Topic :: Scientific/Engineering :: GIS',
+        'Topic :: Scientific/Engineering :: Visualization'
     ],
     # $ setup.py publish support.
     cmdclass={
