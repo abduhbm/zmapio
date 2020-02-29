@@ -32,6 +32,7 @@ def read_file_contents(file_obj):
     data = None
     data_flag = False
     lines = file_obj.readlines()
+    lines = [line for line in lines if not line.startswith('+')]
 
     for i in range(len(lines)):
         line = lines[i].strip()

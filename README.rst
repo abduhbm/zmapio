@@ -115,7 +115,7 @@ Exporting to WKT file:
 
 .. code:: python
 
-    z_file.to_wkt('./output/output.wkt')
+    z_file.to_wkt('./output/output.wkt', precision=2)
 
 Exporting to GeoJSON file:
 
@@ -227,7 +227,7 @@ no_rows):
 
 .. code:: python
 
-    z_val = z_obj.z_values.swapaxes(0, 1)
+    z_val = z_obj.z_values
     print('Z-values shape: ', z_val.shape)
     new_zgrid = ZMAPGrid(z_values=z_val, min_x=-630000.0000, max_x=672000.0000, 
                          min_y=2000000.0000,  max_y=2621000.0000)
