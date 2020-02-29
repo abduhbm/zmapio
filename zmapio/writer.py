@@ -23,7 +23,7 @@ def write(zmap, file_object, nodes_per_line):
     lines.append("0.0, 0.0, 0.0")
     lines.append("@")
 
-    for i in zmap.z_values.swapaxes(0, 1):
+    for i in zmap.z_values:
         for j in chunks(i, nodes_per_line):
             j_fmt = "0.{}f".format(zmap.decimal_places)
             j_fmt = "{0:" + j_fmt + "}"

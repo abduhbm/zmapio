@@ -32,7 +32,6 @@ class ZMAPGrid(object):
 
         elif all(v is not None for v in [self.z_values, self.min_x, self.max_x, self.min_y, self.max_y]):
             self.no_cols, self.no_rows = self.z_values.shape
-            self.z_values = self.z_values.swapaxes(0, 1)
             x = np.linspace(self.min_x, self.max_x, self.no_cols)
             y = np.linspace(self.max_y, self.min_y, self.no_rows)
             self.x_values, self.y_values = np.meshgrid(x, y)
@@ -70,7 +69,7 @@ class ZMAPGrid(object):
                     z[i] = dtype(n)
                 i += 1
 
-        z = z.reshape((self.no_cols, self.no_rows)).swapaxes(0, 1)
+        z = z.reshape((self.no_cols, self.no_rows))
         x = np.linspace(self.min_x, self.max_x, self.no_cols)
         y = np.linspace(self.max_y, self.min_y, self.no_rows)
         x, y = np.meshgrid(x, y)
@@ -79,7 +78,7 @@ class ZMAPGrid(object):
 
     def plot(self, **kwargs):
         import matplotlib.pyplot as plt
-        ax = plt.pcolormesh(self.x_values, self.y_values, self.z_values, **kwargs)
+        ax = plt.pcolormesh(self.x_values, self.y_values, self.z_values.swapaxes(0, 1), **kwargs)
 
         return ax
 
@@ -97,30 +96,33 @@ class ZMAPGrid(object):
             for i in range(self.no_rows):
                 x = self.x_values[i, j]
                 y = self.y_values[i, j]
-                z = self.z_values[i, j]
+                z = self.z_values[j, i]
                 writer.writerow([x, y, z])
 
         if opened_file:
             file_ref.close()
 
-    def to_wkt(self, file_ref, **kwargs):
+    def to_wkt(self, file_ref, precision=None):
         opened_file = False
         if isinstance(file_ref, str) and not hasattr(file_ref, 'write'):
             opened_file = True
             file_ref = open(file_ref, 'w')
 
-        if 'precision' not in kwargs:
-            kwargs['precision'] = 4
+        if not precision:
+            if self.decimal_places:
+                precision = self.decimal_places
+            else:
+                precision = 4
 
         nodes = []
         for j in range(self.no_cols):
             for i in range(self.no_rows):
                 x = self.x_values[i, j]
                 y = self.y_values[i, j]
-                z = self.z_values[i, j]
-                nodes.append('({} {} {})'.format(np.format_float_positional(x, **kwargs),
-                                                 np.format_float_positional(y, **kwargs),
-                                                 np.format_float_positional(z, **kwargs)))
+                z = self.z_values[j, i]
+                nodes.append('({} {} {})'.format(np.format_float_positional(x, precision=precision, unique=False),
+                                                 np.format_float_positional(y, precision=precision, unique=False),
+                                                 np.format_float_positional(z, precision=precision, unique=False)))
         file_ref.write("MULTIPOINT (" + ', '.join(nodes) + ")")
 
         if opened_file:
@@ -137,7 +139,7 @@ class ZMAPGrid(object):
             for i in range(self.no_rows):
                 x = self.x_values[i, j]
                 y = self.y_values[i, j]
-                z = self.z_values[i, j]
+                z = self.z_values[j, i]
                 nodes.append([x, y, z])
 
         json.dump({'type': 'MultiPoint', 'coordinates': nodes}, file_ref)
@@ -153,7 +155,7 @@ class ZMAPGrid(object):
             for i in range(self.no_rows):
                 nodes_dict['X'].append(self.x_values[i, j])
                 nodes_dict['Y'].append(self.y_values[i, j])
-                nodes_dict['Z'].append(self.z_values[i, j])
+                nodes_dict['Z'].append(self.z_values[j, i])
         return pd.DataFrame(nodes_dict)
 
     def write(self, file_ref, nodes_per_line=None):
