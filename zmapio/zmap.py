@@ -77,7 +77,11 @@ class ZMAPGrid(object):
         return x, y, z
 
     def plot(self, **kwargs):
-        import matplotlib.pyplot as plt
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise ImportError("matplotlib needs to be installed for plotting.")
+
         ax = plt.pcolormesh(self.x_values, self.y_values, self.z_values.swapaxes(0, 1), **kwargs)
 
         return ax
@@ -148,7 +152,11 @@ class ZMAPGrid(object):
             file_ref.close()
 
     def to_dataframe(self):
-        import pandas as pd
+        try:
+            import pandas as pd
+        except ImportError:
+            raise ImportError("pandas package needs to be installed for dataframe conversion.")
+
         from collections import defaultdict
         nodes_dict = defaultdict(list)
         for j in range(self.no_cols):
