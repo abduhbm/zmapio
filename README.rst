@@ -229,7 +229,7 @@ no_rows):
 
     z_val = z_obj.z_values
     print('Z-values shape: ', z_val.shape)
-    new_zgrid = ZMAPGrid(z_values=z_val, min_x=-630000.0000, max_x=672000.0000, 
+    new_zgrid = ZMAPGrid(z_values=z_val, min_x=-630000.0000, max_x=672000.0000,
                          min_y=2000000.0000,  max_y=2621000.0000)
 
 
@@ -283,5 +283,3 @@ References
 * https://lists.osgeo.org/pipermail/gdal-dev/2011-June/029173.html
 * https://gist.github.com/wassname/526d5fde3f3cbeb67da8
 * Saltus, R.W. and Bird, K.J., 2003. Digital depth horizon compilations of the Alaskan North Slope and adjacent arctic regions. U.S. Geological Survey data release: https://doi.org/10.3133/ofr03230
-
-
