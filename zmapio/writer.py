@@ -1,3 +1,4 @@
+import math
 
 
 def chunks(l, n):
@@ -27,7 +28,7 @@ def write(zmap, file_object, nodes_per_line):
         for j in chunks(i, nodes_per_line):
             j_fmt = "0.{}f".format(zmap.decimal_places)
             j_fmt = "{0:" + j_fmt + "}"
-            j = [j_fmt.format(float(x)) for x in j]
+            j = [j_fmt.format(float(x)) if not math.isnan(x) else j_fmt.format(float(zmap.null_value)) for x in j]
             line = "{:>" + "{}".format(zmap.field_width) + "}"
             lines.append(''.join([line] * len(j)).format(*tuple(j)))
 
