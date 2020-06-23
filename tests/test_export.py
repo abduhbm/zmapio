@@ -1,5 +1,8 @@
 import json
 
+import pandas as pd
+import pytest
+
 
 def test_export_to_csv(zmap_object, tmpdir):
     x = tmpdir.join("output.csv")
@@ -33,3 +36,14 @@ def test_export_to_wkt_with_precision(zmap_object, tmpdir):
     with open(x.strpath) as f:
         line = f.readline()
     assert line.startswith("MULTIPOINT ((0.00 300.00 nan),")
+
+
+def test_export_to_dataframe(zmap_object):
+    with pytest.warns(UserWarning, match="to_pandas"):
+        zmap_object.to_dataframe()
+
+
+def test_export_to_pandas(zmap_object):
+    df = zmap_object.to_dataframe()
+    assert type(df) == pd.DataFrame
+    assert df.describe().loc["mean"]["X"] == 100.0
