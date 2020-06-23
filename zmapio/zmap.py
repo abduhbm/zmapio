@@ -184,6 +184,12 @@ class ZMAPGrid(object):
             file_ref.close()
 
     def to_dataframe(self):
+        import warnings
+
+        warnings.warn("to_dataframe will be renamed to to_pandas in 0.7.0")
+        return self.to_pandas()
+
+    def to_pandas(self):
         try:
             import pandas as pd
         except ImportError:
