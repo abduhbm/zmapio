@@ -2,12 +2,10 @@
 zmapio: reading and writing ZMAP Plus Grid files
 ------------------------------------------------
 
-|Linux Build Status| |Windows Build Status| |PyPI version|
+|CI Status| |PyPI version|
 
-.. |Linux Build Status| image:: https://travis-ci.com/abduhbm/zmapio.svg?branch=master
-   :target: https://travis-ci.com/abduhbm/zmapio
-.. |Windows Build Status| image:: https://github.com/abduhbm/zmapio/workflows/Windows%20CI/badge.svg?branch=master
-   :target: https://github.com/abduhbm/zmapio/actions?query=workflow%3A%22Windows+CI%22
+.. |CI Status| image:: https://github.com/abduhbm/zmapio/workflows/CI/badge.svg?branch=master
+   :target: https://github.com/abduhbm/zmapio/actions?query=workflow%3A%22CI%22
 .. |PyPI version| image:: https://img.shields.io/pypi/v/zmapio.svg
     :target: https://pypi.python.org/pypi/zmapio
 
