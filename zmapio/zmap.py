@@ -182,3 +182,4 @@ class ZMAPGrid(object):
         writer.write(self, file_ref, nodes_per_line)
         if opened_file:
             file_ref.close()
+
