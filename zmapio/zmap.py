@@ -99,25 +99,11 @@ class ZMAPGrid(object):
 
         return ax
 
-    def to_csv(self, file_ref, **kwargs):
-        opened_file = False
-        if isinstance(file_ref, str) and not hasattr(file_ref, "write"):
-            opened_file = True
-            file_ref = open(file_ref, "w")
-
-        if "lineterminator" not in kwargs:
-            kwargs["lineterminator"] = "\n"
-
-        writer = csv.writer(file_ref, **kwargs)
-        for j in range(self.no_cols):
-            for i in range(self.no_rows):
-                x = self.x_values[i, j]
-                y = self.y_values[i, j]
-                z = self.z_values[j, i]
-                writer.writerow([x, y, z])
-
-        if opened_file:
-            file_ref.close()
+    def to_csv(self, file_ref, swap_null=False, delimiter=',', **kwargs):
+        dat = np.column_stack([self.x_values.flatten(), self.y_values.flatten(), self.z_values.T.flatten()])
+        if swap_null:
+            dat = np.nan_to_num(dat, nan=self.null_value)
+        np.savetxt(file_ref, dat, header='X,Y,Z', delimiter=delimiter, fmt='%s', **kwargs)
 
     def to_wkt(self, file_ref, precision=None):
         opened_file = False
