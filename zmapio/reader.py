@@ -26,7 +26,7 @@ def open_file(file_ref):
     return file_ref
 
 
-def read_file_contents(file_obj):
+def read_file_contents(file_obj, dtype):
     comments = []
     headers = None
     data = None
@@ -47,7 +47,7 @@ def read_file_contents(file_obj):
             headers = read_headers(i, lines)
 
         elif line.startswith("@") and data_flag:
-            data = read_data(i, lines)
+            data = read_data(i, lines, dtype)
             break
 
         else:
