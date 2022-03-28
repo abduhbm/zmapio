@@ -181,22 +181,8 @@ class ZMAPGrid(object):
         return self.to_pandas()
 
     def to_pandas(self):
-        try:
-            import pandas as pd
-        except ImportError:
-            raise ImportError(
-                "pandas package needs to be installed for dataframe conversion."
-            )
-
-        from collections import defaultdict
-
-        nodes_dict = defaultdict(list)
-        for j in range(self.no_cols):
-            for i in range(self.no_rows):
-                nodes_dict["X"].append(self.x_values[i, j])
-                nodes_dict["Y"].append(self.y_values[i, j])
-                nodes_dict["Z"].append(self.z_values[j, i])
-        return pd.DataFrame(nodes_dict)
+        dat = np.column_stack([self.x_values.flatten(), self.y_values.flatten(), self.z_values.T.flatten()])
+        return pd.DataFrame(dat, columns=['X', 'Y', 'Z']).sort_values(by=['X', 'Y'])
 
     def write(self, file_ref, nodes_per_line=None):
         opened_file = False
