@@ -82,10 +82,5 @@ def read_headers(index, lines):
     return header
 
 
-def read_data(index, lines):
-    data = []
-    for line in lines[index + 1 :]:
-        line = line.strip()
-        data.append(line)
-
-    return data
+def read_data(index, lines, dtype):
+    return np.asarray([dtype(word) for line in lines[index + 1 :] for word in line.strip().split()])
