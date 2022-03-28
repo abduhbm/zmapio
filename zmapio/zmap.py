@@ -57,44 +57,35 @@ class ZMAPGrid(object):
             self.x_values, self.y_values = np.meshgrid(x, y)
 
     def read(self, file_ref, dtype=np.float64):
-        file_obj = reader.open_file(file_ref)
-        comments, headers, data = reader.read_file_contents(file_obj)
+    file_obj = reader.open_file(file_ref)
+    comments, headers, z = reader.read_file_contents(file_obj, dtype)
 
-        if not headers:
-            raise ValueError("Header section is not defined")
+    if not headers:
+        raise ValueError("Header section is not defined")
 
-        for key in headers:
-            setattr(self, key, headers[key])
+    for key in headers:
+        setattr(self, key, headers[key])
 
-        self.comments = comments
+    self.comments = comments
 
-        if hasattr(file_obj, "close"):
-            file_obj.close()
+    if hasattr(file_obj, "close"):
+        file_obj.close()
 
+    try:
+        self.null_value = np.float64(self.null_value)
+    except TypeError:
         try:
-            self.null_value = np.float64(self.null_value)
+            self.null_value = np.float64(self.null_value_2)
         except TypeError:
-            try:
-                self.null_value = np.float64(self.null_value_2)
-            except TypeError:
-                raise ValueError("Null value is not defined in header")
+            raise ValueError("Null value is not defined in header")
 
-        z = np.zeros(self.no_rows * self.no_cols, dtype=dtype)
-        i = 0
-        for nodes in data:
-            for n in nodes.split():
-                if n == self.null_value or dtype(n) == dtype(self.null_value):
-                    z[i] = np.nan
-                else:
-                    z[i] = dtype(n)
-                i += 1
+    z[z==self.null_value] = np.nan
+    z = z.reshape((self.no_cols, self.no_rows))
+    x = np.linspace(self.min_x, self.max_x, self.no_cols)
+    y = np.linspace(self.max_y, self.min_y, self.no_rows)
+    x, y = np.meshgrid(x, y)
 
-        z = z.reshape((self.no_cols, self.no_rows))
-        x = np.linspace(self.min_x, self.max_x, self.no_cols)
-        y = np.linspace(self.max_y, self.min_y, self.no_rows)
-        x, y = np.meshgrid(x, y)
-
-        return x, y, z
+    return x, y, z
 
     def plot(self, **kwargs):
         try:
