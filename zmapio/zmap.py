@@ -167,6 +167,13 @@ class ZMAPGrid(object):
         return self.to_pandas()
 
     def to_pandas(self):
+        try:
+            import pandas as pd
+        except ImportError:
+            raise ImportError(
+                "pandas package needs to be installed for dataframe conversion."
+            )
+        
         dat = np.column_stack([self.x_values.flatten(), self.y_values.flatten(), self.z_values.T.flatten()])
         return pd.DataFrame(dat, columns=['X', 'Y', 'Z']).sort_values(by=['X', 'Y'])
 
