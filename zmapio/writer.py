@@ -1,4 +1,4 @@
-import math
+import numpy as np
 
 
 def chunks(x, n):
@@ -33,18 +33,24 @@ def write(zmap, file_object, nodes_per_line):
     lines.append("0.0, 0.0, 0.0")
     lines.append("@")
 
-    file_object.writelines(lines)
+    file_object.write("\n".join(lines))
+    file_object.write("\n")
 
-    fmt = '{0:>{1}.{2}f}'.format
+    fmt = "{0:>{1}.{2}f}".format
     width = zmap.field_width
     precision = zmap.decimal_places
 
     zmap.z_values = np.nan_to_num(zmap.z_values, nan=zmap.null_value)
 
     def write_lines(r):
-        line_gen = (''.join(line) + '\n' for line in chunks([fmt(val, width, precision) for val in r], nodes_per_line))
+        line_gen = (
+            "".join(line) + "\n"
+            for line in chunks(
+                [fmt(val, width, precision) for val in r], nodes_per_line
+            )
+        )
         file_object.writelines(line_gen)
 
     [write_lines(row) for row in zmap.z_values]
-        
-    file_object.writelines([''])
+
+    file_object.writelines([""])

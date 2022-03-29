@@ -83,4 +83,6 @@ def read_headers(index, lines):
 
 
 def read_data(index, lines, dtype):
-    return np.asarray([dtype(word) for line in lines[index + 1 :] for word in line.strip().split()])
+    return np.asarray(
+        [dtype(word) for line in lines[index + 1 :] for word in line.strip().split()]
+    )

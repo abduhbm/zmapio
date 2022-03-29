@@ -1,4 +1,3 @@
-import csv
 import json
 
 import numpy as np
@@ -79,7 +78,7 @@ class ZMAPGrid(object):
             except TypeError:
                 raise ValueError("Null value is not defined in header")
 
-        z[z==self.null_value] = np.nan
+        z[z == self.null_value] = np.nan
         z = z.reshape((self.no_cols, self.no_rows))
         x = np.linspace(self.min_x, self.max_x, self.no_cols)
         y = np.linspace(self.max_y, self.min_y, self.no_rows)
@@ -99,11 +98,19 @@ class ZMAPGrid(object):
 
         return ax
 
-    def to_csv(self, file_ref, swap_null=False, delimiter=',', **kwargs):
-        dat = np.column_stack([self.x_values.flatten(), self.y_values.flatten(), self.z_values.T.flatten()])
+    def to_csv(self, file_ref, swap_null=False, delimiter=",", **kwargs):
+        dat = np.column_stack(
+            [
+                self.x_values.flatten(),
+                self.y_values.flatten(),
+                self.z_values.T.flatten(),
+            ]
+        )
         if swap_null:
             dat = np.nan_to_num(dat, nan=self.null_value)
-        np.savetxt(file_ref, dat, header='X,Y,Z', delimiter=delimiter, fmt='%s', **kwargs)
+        np.savetxt(
+            file_ref, dat, header="X,Y,Z", delimiter=delimiter, fmt="%s", **kwargs
+        )
 
     def to_wkt(self, file_ref, precision=None):
         opened_file = False
@@ -173,9 +180,15 @@ class ZMAPGrid(object):
             raise ImportError(
                 "pandas package needs to be installed for dataframe conversion."
             )
-        
-        dat = np.column_stack([self.x_values.flatten(), self.y_values.flatten(), self.z_values.T.flatten()])
-        return pd.DataFrame(dat, columns=['X', 'Y', 'Z']).sort_values(by=['X', 'Y'])
+
+        dat = np.column_stack(
+            [
+                self.x_values.flatten(),
+                self.y_values.flatten(),
+                self.z_values.T.flatten(),
+            ]
+        )
+        return pd.DataFrame(dat, columns=["X", "Y", "Z"]).sort_values(by=["X", "Y"])
 
     def write(self, file_ref, nodes_per_line=None):
         opened_file = False
