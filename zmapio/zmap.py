@@ -170,7 +170,7 @@ class ZMAPGrid(object):
     def to_dataframe(self):
         import warnings
 
-        warnings.warn("In version 0.8, to_dataframe was renamed to to_pandas")
+        warnings.warn("In version 0.7, to_dataframe was renamed to to_pandas")
         return self.to_pandas()
 
     def to_pandas(self):
