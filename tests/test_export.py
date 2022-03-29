@@ -40,7 +40,7 @@ def test_export_to_wkt_with_precision(zmap_object, tmpdir):
 
 
 def test_export_to_dataframe(zmap_object):
-    with pytest.warns(UserWarning, match="to_pandas"):
+    with pytest.warns(UserWarning, match="to_dataframe was renamed to to_pandas"):
         zmap_object.to_dataframe()
 
 
