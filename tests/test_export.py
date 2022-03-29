@@ -8,8 +8,9 @@ def test_export_to_csv(zmap_object, tmpdir):
     x = tmpdir.join("output.csv")
     zmap_object.to_csv(x.strpath)
     lines = x.readlines()
-    assert len(lines) == 24
-    assert lines[0] == "0.0,300.0,nan\n"
+    assert len(lines) == 25
+    assert lines[0] == "# X,Y,Z\n"
+    assert lines[1] == "0.0,300.0,nan\n"
 
 
 def test_export_to_geojson(zmap_object, tmpdir):
