@@ -1,4 +1,3 @@
-import csv
 import json
 
 import numpy as np
@@ -58,7 +57,7 @@ class ZMAPGrid(object):
 
     def read(self, file_ref, dtype=np.float64):
         file_obj = reader.open_file(file_ref)
-        comments, headers, data = reader.read_file_contents(file_obj)
+        comments, headers, z = reader.read_file_contents(file_obj, dtype)
 
         if not headers:
             raise ValueError("Header section is not defined")
@@ -79,16 +78,7 @@ class ZMAPGrid(object):
             except TypeError:
                 raise ValueError("Null value is not defined in header")
 
-        z = np.zeros(self.no_rows * self.no_cols, dtype=dtype)
-        i = 0
-        for nodes in data:
-            for n in nodes.split():
-                if n == self.null_value or dtype(n) == dtype(self.null_value):
-                    z[i] = np.nan
-                else:
-                    z[i] = dtype(n)
-                i += 1
-
+        z[z == self.null_value] = np.nan
         z = z.reshape((self.no_cols, self.no_rows))
         x = np.linspace(self.min_x, self.max_x, self.no_cols)
         y = np.linspace(self.max_y, self.min_y, self.no_rows)
@@ -108,25 +98,19 @@ class ZMAPGrid(object):
 
         return ax
 
-    def to_csv(self, file_ref, **kwargs):
-        opened_file = False
-        if isinstance(file_ref, str) and not hasattr(file_ref, "write"):
-            opened_file = True
-            file_ref = open(file_ref, "w")
-
-        if "lineterminator" not in kwargs:
-            kwargs["lineterminator"] = "\n"
-
-        writer = csv.writer(file_ref, **kwargs)
-        for j in range(self.no_cols):
-            for i in range(self.no_rows):
-                x = self.x_values[i, j]
-                y = self.y_values[i, j]
-                z = self.z_values[j, i]
-                writer.writerow([x, y, z])
-
-        if opened_file:
-            file_ref.close()
+    def to_csv(self, file_ref, swap_null=False, delimiter=",", **kwargs):
+        dat = np.column_stack(
+            [
+                self.x_values.flatten(),
+                self.y_values.flatten(),
+                self.z_values.T.flatten(),
+            ]
+        )
+        if swap_null:
+            dat = np.nan_to_num(dat, nan=self.null_value)
+        np.savetxt(
+            file_ref, dat, header="X,Y,Z", delimiter=delimiter, fmt="%s", **kwargs
+        )
 
     def to_wkt(self, file_ref, precision=None):
         opened_file = False
@@ -197,15 +181,14 @@ class ZMAPGrid(object):
                 "pandas package needs to be installed for dataframe conversion."
             )
 
-        from collections import defaultdict
-
-        nodes_dict = defaultdict(list)
-        for j in range(self.no_cols):
-            for i in range(self.no_rows):
-                nodes_dict["X"].append(self.x_values[i, j])
-                nodes_dict["Y"].append(self.y_values[i, j])
-                nodes_dict["Z"].append(self.z_values[j, i])
-        return pd.DataFrame(nodes_dict)
+        dat = np.column_stack(
+            [
+                self.x_values.flatten(),
+                self.y_values.flatten(),
+                self.z_values.T.flatten(),
+            ]
+        )
+        return pd.DataFrame(dat, columns=["X", "Y", "Z"]).sort_values(by=["X", "Y"])
 
     def write(self, file_ref, nodes_per_line=None):
         opened_file = False
