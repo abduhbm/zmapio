@@ -23,6 +23,7 @@ class ZMAPGrid(object):
         min_y=None,
         max_y=None,
         z_values=None,
+        pixel_is_point=False,
         **kwargs
     ):
         self.comments = comments
@@ -39,6 +40,7 @@ class ZMAPGrid(object):
         self.max_x = max_x
         self.min_y = min_y
         self.max_y = max_y
+        self.pixel_is_point = pixel_is_point
 
         if file_ref:
             x, y, z = self.read(file_ref, **kwargs)
@@ -80,8 +82,17 @@ class ZMAPGrid(object):
 
         z[z == self.null_value] = np.nan
         z = z.reshape((self.no_cols, self.no_rows))
-        x = np.linspace(self.min_x, self.max_x, self.no_cols)
-        y = np.linspace(self.max_y, self.min_y, self.no_rows)
+        if self.pixel_is_point:
+            # get cell size
+            dx = (self.max_x - self.min_x) / self.no_cols
+            dy = (self.max_y - self.min_y) / self.no_rows
+            x = np.linspace(self.min_x + (dx / 2), self.max_x - (dx / 2), self.no_cols)
+            y = np.linspace(self.max_y - (dy / 2), self.min_y + (dy / 2), self.no_rows)
+
+        else:
+            x = np.linspace(self.min_x, self.max_x, self.no_cols)
+            y = np.linspace(self.max_y, self.min_y, self.no_rows)
+
         x, y = np.meshgrid(x, y)
 
         return x, y, z
