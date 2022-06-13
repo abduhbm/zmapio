@@ -26,3 +26,11 @@ def zmap_object(tmpdir):
     x.write(z_text)
     z_obj = ZMAPGrid(x.strpath)
     yield z_obj
+
+
+@pytest.fixture
+def zmap_object_pixel_is_point(tmpdir):
+    x = tmpdir.join("test.dat")
+    x.write(z_text)
+    z_obj = ZMAPGrid(x.strpath, pixel_is_point=True)
+    yield z_obj
