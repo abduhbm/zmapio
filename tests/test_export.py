@@ -1,4 +1,5 @@
 import json
+import warnings
 
 import pandas as pd
 import pytest
@@ -72,6 +73,11 @@ def test_export_to_dataframe(zmap_object):
 
 
 def test_export_to_pandas(zmap_object):
-    df = zmap_object.to_dataframe()
+    df = zmap_object.to_pandas()
     assert type(df) == pd.DataFrame
     assert df.describe().loc["mean"]["X"] == 100.0
+
+
+def test_export_to_dataframe_capture_warning(zmap_object):
+    with pytest.warns(UserWarning):
+        warnings.warn("renamed to to_pandas", UserWarning)
