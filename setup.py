@@ -14,7 +14,7 @@ DESCRIPTION = "Python library for reading and writing map gridded data using ZMA
 URL = "https://github.com/abduhbm/zmapio"
 AUTHOR = "Abdulelah Bin Mahfoodh"
 
-REQUIRED = ["numpy"]
+REQUIRED = ["numpy>=1.22"]
 EXTRA_REQS = ["pandas", "matplotlib"]
 TEST_REQS = ["pytest"]
 
@@ -83,6 +83,8 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Topic :: Utilities",
         "Topic :: Scientific/Engineering :: GIS",
         "Topic :: Scientific/Engineering :: Visualization",
