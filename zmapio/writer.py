@@ -40,13 +40,11 @@ def write(zmap, file_object, nodes_per_line):
     width = zmap.field_width
     precision = zmap.decimal_places
 
-    zmap.z_values = np.nan_to_num(zmap.z_values, nan=zmap.null_value)
-
     def write_lines(r):
         line_gen = (
             "".join(line) + "\n"
             for line in chunks(
-                [fmt(val, width, precision) for val in r], nodes_per_line
+                [fmt(val, width, precision) if val!=zmap.null_value else str(zmap.null_value) for val in r], nodes_per_line
             )
         )
         file_object.writelines(line_gen)
